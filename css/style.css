@@ -1,0 +1,91 @@
+
+
+/* Css for Part2 */
+
+hr{
+	margin: 12px 0;
+	height: 1px;
+	border: 1px solid #fff;
+	border-top: 1px solid #ccc;
+	background-color: #fff;
+}
+
+#profile_picture{
+	width: 100%;
+	float: left;
+}
+
+
+#profile_picture img{
+	width: 240px;
+}
+
+#personal_info{
+	width: 100%;
+	float: left;
+}
+
+.clear{
+	clear: both;
+}
+
+textarea{
+	width: 500px;
+	height: 150px;
+}
+
+div.frameT {
+	width: 100%;
+	padding: 0;
+	display: table;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 0;
+}
+
+div.frameTC {
+	padding: 0;
+	vertical-align: middle;
+	display: table-cell;
+	margin: 0;
+}
+
+div.content {
+	max-width: 500px;
+	width: 80%px;
+	font-size: 16px;
+	font-family: Arial, Helvetica, sans-serif;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	background-color: #fd9a29;
+	margin: 0 auto;
+	color: #fff;
+	text-align: center;
+	line-height: 50px;
+}
+
+.invalido {
+	line-height: 1.5em !important;
+	padding-top: 1em;
+	margin-bottom: 0px;
+}
+
+.regresar{
+	background-color: #fd9a29;
+	width: 100%;
+	position: absolute;
+	top: 0px;
+	line-height: 40px;
+	text-align: center;
+	color: white;
+	font-size: 1.2em;
+	height: 40px;
+}
+
+.regresar a{
+	color: white;
+	font-size: 1.2em;
+	text-decoration: none;
+}
