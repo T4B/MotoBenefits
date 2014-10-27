@@ -19,11 +19,6 @@ $general->logged_out_protect();
 <script src="js/jquery-1.11.0.min.js"></script>
 <script src="js/jquery-ui-1.8.12.min.js"></script>
 
-<!-- Wizard-->
-
-<!-- Radio and checkbox styles -->
-<script src="check_radio/jquery.icheck.js"></script>
-
 	
     <title>Editar Perfil</title>    
 </head>
@@ -396,7 +391,6 @@ else if ($("#banco").val() == "BANAMEX" || "BANCOMER" || "IXE" || "HSBC" || "BAN
 <!-- OTHER JS --> 
 <script src="js/jquery.placeholder.js"></script>
 <script src="js/jquery.switch.min.js"></script>
-<script src="js/functions.js"></script>
 
 
 
