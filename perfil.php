@@ -114,8 +114,6 @@ else
 <link rel="stylesheet" href="css/reporte.css" media="screen" type="text/css" />
 <link rel="stylesheet" href="css/reporte_final.css" media="screen" type="text/css" />
 
-<link href="styles/glDatePicker.default.css" rel="stylesheet" type="text/css">
-
 
 <!-- LESS JS engine-->
 <script src="less/less-1.5.0.min.js"></script>

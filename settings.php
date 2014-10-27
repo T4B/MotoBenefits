@@ -233,8 +233,6 @@ $general->logged_out_protect();
 </div>
 </section>
 
-<script src="js/bootstrap.js"></script>
-
 
 </body>
 </html>
