@@ -2436,15 +2436,15 @@ class Users{
 			
 			$query->execute();
 				
-				$headers .= "Reply-To: Motobenefits <noreplay@moto-benefits.com.mx>\r\n"; 
-				$headers .= "Return-Path: Motobenefits <noreplay@moto-benefits.com.mx>\r\n"; 
+				$headers .= "Reply-To: Motobenefits <noreply@moto-benefits.com.mx>\r\n"; 
+				$headers .= "Return-Path: Motobenefits <noreply@moto-benefits.com.mx>\r\n"; 
 				$headers .= "From: Motobenefits <noreplay@moto-benefits.com.mx>\r\n"; 
 			    $headers .= "Organization: Motobenefits\r\n";
 			    $headers .= "MIME-Version: 1.0\r\n";
 			    $headers .= "Content-type: text/plain; charset=utf-8\r\n";
 			    $headers .= "X-Priority: 3\r\n";
 			    $headers .= "X-Mailer: PHP". phpversion() ."\r\n";   
-			mail($email, 'Recuperar contraseña', "Hola " . $username. ",\r\nPor favor da click a la liga de abajo:\r\n\r\nhttp://www.moto-benefits.com.mx/recover.php?email=" . $email . "&generated_string=" . $generated_string . "\r\n\r\n Generaremos una nueva contraseña que será enviada a tu correo\r\n\r\nMotobenefits", $headers);			
+			mail($email, 'Recuperar contraseña', "Hola " . $username. ",\r\nPor favor da click a la liga de abajo:\r\n\r\nhttp://biz157.inmotionhosting.com/recover.php?email=" . $email . "&generated_string=" . $generated_string . "\r\n\r\n Generaremos una nueva contraseña que será enviada a tu correo\r\n\r\nMotobenefits", $headers);			
 			
 		} catch(PDOException $e){
 			die($e->getMessage());
@@ -2592,8 +2592,8 @@ class Users{
 	
 			try{
 				$query->execute();
-				$headers = "From: noreplay@moto-benefits.com.mx\r\n";
-				mail($email, 'Activacion Motobenefits', "Hola " . $username. ",\r\nGracias por registrarte. Por favor da click en la siguiente liga para activar tu cuenta:\r\n\r\nhttp://www.moto-benefits.com/activate.php?email=" . $email . "&email_code=" . $email_code . "\r\n\r\nMotobenefits", $headers);
+				$headers = "From: noreply@moto-benefits.com.mx\r\n";
+				mail($email, 'Activacion Motobenefits', "Hola " . $username. ",\r\nGracias por registrarte. Por favor da click en la siguiente liga para activar tu cuenta:\r\n\r\nhttp://biz157.inmotionhosting.com/activate.php?email=" . $email . "&email_code=" . $email_code . "\r\n\r\nMotobenefits", $headers);
 			}catch(PDOException $e){
 				die($e->getMessage());
 			}	

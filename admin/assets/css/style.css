@@ -336,6 +336,8 @@ blockquote small{
 }
 .logo{
 	margin:18px 14px;
+	display: block;
+	float: left;
 }
 
 .normal{ 
