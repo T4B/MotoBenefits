@@ -1,8 +1,8 @@
 <?php 
 session_start();
 
-		$link=mysql_connect("localhost","motobene_usuario","socio00");
-		mysql_select_db("motobene_usuario");
+		$link=mysql_connect("localhost","motobe5_admin","TByz5leCu9vC");
+		mysql_select_db("motobe5_usuario");
 
 		$query="INSERT INTO `sesion`(`tipo`, `fecha`, `usuario`,ip) VALUES ('salida','".date("Y-m-d H:i:s")."','".$_SESSION['id']."','".$_SERVER['REMOTE_ADDR']."')";
 		mysql_query($query);
