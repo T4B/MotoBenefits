@@ -311,8 +311,8 @@ class Users{
 
 	public function perfil_ventas_modelo_mes($id,$mes_entrada)
 	{
-		$link=mysql_connect("localhost","motobene_usuario","socio00");
-		mysql_select_db("motobene_usuario");
+		$link=mysqli_connect("localhost","motobe5_admin","TByz5leCu9vC","motobe5_usuario");
+		// mysqli_select_db($link, "motobene_usuario");
 		$cadena="";
 
 		$meses= array('', 'Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre' );
@@ -341,7 +341,7 @@ class Users{
 				
 
 				$ventas="SELECT DISTINCT valida.modelo FROM valida,catalogo WHERE valida.modelo=catalogo.modelo AND cvendedor='".$vendedor."' AND fecha BETWEEN '".$fecha_inicio."' AND '".$fecha_final."' ORDER BY catalogo.modelo ASC";
-				$resultado_ventas=mysql_query($ventas);
+				$resultado_ventas=mysqli_query($link, $ventas);
 
 
 
@@ -350,32 +350,34 @@ class Users{
 				$totalporpagar=0;
 				$modelos='';
 
-				if(mysql_num_rows($resultado_ventas)>0)
+				if(mysqli_num_rows($resultado_ventas)>0)
 				{	
-						while ($row=mysql_fetch_array($resultado_ventas)) {
+						while ($row=mysqli_fetch_array($resultado_ventas)) {
 
 							$puntostotales=0;
 
 							$detalle="SELECT * FROM valida,catalogo WHERE valida.modelo=catalogo.modelo AND fecha BETWEEN '".$fecha_inicio."' AND '".$fecha_final."'  AND cvendedor='".$vendedor."' AND valida.modelo='".$row['modelo']."'";
-							$resultado_detalle=mysql_query($detalle);
+							$resultado_detalle=mysqli_query($link,$detalle);
 
-							$unidades_vendidas=mysql_num_rows($resultado_detalle);
+							$unidades_vendidas=mysqli_num_rows($resultado_detalle);
 
 							$puntosnormales=0;
 							$puntospromocion=0;
 							$unidadesnormales=0;
 							$unidadespromocion=0;
 
-							while ($rowdetalle=mysql_fetch_array($resultado_detalle)) {
+							while ($rowdetalle=mysqli_fetch_array($resultado_detalle)) {
 										
 
 									$imagen=$rowdetalle['imagen'];
 									$nombre=$rowdetalle['nombre'];
 									$cobrado=$rowdetalle['cobrado'];
 									$query="SELECT puntos FROM promo WHERE tipo='$tipo' AND modelo='".$row['modelo']."' AND inicio<='".$rowdetalle['fecha']."' AND final>='".$rowdetalle['fecha']."'";
-									$resultado=mysql_query($query);
-									if(mysql_num_rows($resultado)>0)
+									$resultado=mysqli_query($link,$query);
+									if(mysqli_num_rows($resultado)>0)
 									{
+										$promodetalle=mysqli_fetch_array($resultado_detalle);
+
 										$totalfinal+=$promodetalle['puntos'];	
 									}
 									else
@@ -439,12 +441,9 @@ class Users{
 	}
 
 
-	public function perfil_ventas_mes($id,$mes_entrada)
-	{
-		
-		
-		$link=mysql_connect("localhost","motobene_usuario","socio00");
-		mysql_select_db("motobene_usuario");
+	public function perfil_ventas_mes($id,$mes_entrada){
+		$link=mysqli_connect("localhost","motobe5_admin","TByz5leCu9vC","motobe5_usuario");
+		// mysqli_select_db($link, "motobene_usuario");
 		$cadena="";
 
 		$meses= array('', 'Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre' );
@@ -474,7 +473,7 @@ class Users{
 				
 
 				$ventas="SELECT DISTINCT valida.modelo FROM valida,catalogo WHERE valida.modelo=catalogo.modelo AND cvendedor='".$vendedor."' AND fecha BETWEEN '".$fecha_inicio."' AND '".$fecha_final."' ORDER BY catalogo.modelo ASC";
-				$resultado_ventas=mysql_query($ventas);
+				$resultado_ventas=mysqli_query($link,$ventas);
 
 
 
@@ -482,35 +481,35 @@ class Users{
 				$totalpagado=0;
 				$totalporpagar=0;
 
-				if(mysql_num_rows($resultado_ventas)>0)
+				if(mysqli_num_rows($resultado_ventas)>0)
 				{	
-						while ($row=mysql_fetch_array($resultado_ventas)) {
+						while ($row=mysqli_fetch_array($resultado_ventas)) {
 
 							$puntostotales=0;
 
 							$detalle="SELECT * FROM valida,catalogo WHERE valida.modelo=catalogo.modelo AND fecha BETWEEN '".$fecha_inicio."' AND '".$fecha_final."'  AND cvendedor='".$vendedor."' AND valida.modelo='".$row['modelo']."'";
-							$resultado_detalle=mysql_query($detalle);
+							$resultado_detalle=mysqli_query($link,$detalle);
 
 							$puntosnormales=0;
 							$puntospromocion=0;
 							$unidadesnormales=0;
 							$unidadespromocion=0;
 
-							while ($rowdetalle=mysql_fetch_array($resultado_detalle)) {
+							while ($rowdetalle=mysqli_fetch_array($resultado_detalle)) {
 										
 
 									$imagen=$rowdetalle['imagen'];
 									$nombre=$rowdetalle['nombre'];
 									$cobrado=$rowdetalle['cobrado'];
 									$query="SELECT puntos FROM promo WHERE tipo='$tipo' AND modelo='".$row['modelo']."' AND inicio<='".$rowdetalle['fecha']."' AND final>='".$rowdetalle['fecha']."'";
-									$resultado=mysql_query($query);
+									$resultado=mysqli_query($link,$query);
 									
 
 
 
-									if(mysql_num_rows($resultado)>0)
+									if(mysqli_num_rows($resultado)>0)
 									{
-										$promodetalle=mysql_fetch_array($resultado);
+										$promodetalle=mysqli_fetch_array($resultado);
 										$totalfinal+=$promodetalle['puntos'];	
 										$puntostotales+=$promodetalle['puntos'];
 										$puntospromocion+=$promodetalle['puntos'];
@@ -552,7 +551,7 @@ class Users{
 							<table>
 								<thead>
 								<tr style="background: transparent !important;">
-									<th colspan="2"><a href="javascript:window.open(\'detalle_usuario_mes.php?id='.$id.'&mes='.$mes.'&ano='.$ano.'\', \'_blank\', \'toolbar=yes, scrollbars=yes, resizable=yes, top=500, left=500, width=800, height=400\');">'.$meses[$mes].'</a></th>
+									<th colspan="2"><a href="javascript:;" onclick="javascript:window.open(\'detalle_usuario_mes.php?id='.$id.'&mes='.$mes.'&ano='.$ano.'\', \'_blank\', \'toolbar=yes, scrollbars=yes, resizable=yes, top=500, left=500, width=800, height=400\');">'.$meses[$mes].'</a></th>
 								</tr>
 								</thead>
 								
@@ -599,8 +598,8 @@ class Users{
 
 	public function detalle_vendedor_mes($id,$mes,$ano)
 	{
-		$link=mysql_connect("localhost","motobene_usuario","socio00");
-		mysql_select_db("motobene_usuario");
+		$link=mysqli_connect("localhost","motobe5_admin","TByz5leCu9vC","motobe5_usuario");
+		// mysqli_select_db($link, "motobene_usuario");
 		$cadena="";
 
 		$usuario=$this->db->prepare("SELECT cvendedor,tipo FROM users WHERE id=?");
@@ -620,17 +619,18 @@ class Users{
 
 
 		$query="SELECT DISTINCT valida.modelo FROM valida,catalogo WHERE valida.modelo=catalogo.modelo AND cvendedor='".$vendedor."' AND fecha BETWEEN '".$fecha_inicio."' AND '".$fecha_final."' ORDER BY catalogo.modelo ASC";
-		$resultadofechas=mysql_query($query);
+		$resultadofechas=mysqli_query($link,$query);
 
 
 		
 
-		$totalfinal=0;
-		$totalpagado=0;
+		$totalfinal    = 0;
+		$totalpagado   = 0;
+		$totalporpagar = 0;
 
-		if(mysql_num_rows($resultadofechas)>0)
+		if(mysqli_num_rows($resultadofechas)>0)
 		{	
-				while ($row=mysql_fetch_array($resultadofechas)) {
+				while ($row=mysqli_fetch_array($resultadofechas)) {
 
 					$puntostotales=0;
 					$detalle=$this->db->prepare("SELECT * FROM valida,catalogo WHERE valida.modelo=catalogo.modelo AND cvendedor=? AND valida.modelo=? AND fecha BETWEEN '".$fecha_inicio."' AND '".$fecha_final."'");
@@ -653,14 +653,14 @@ class Users{
 							$nombre=$rowdetalle['nombre'];
 							$cobrado=$rowdetalle['cobrado'];
 							$query="SELECT puntos FROM promo WHERE tipo='$tipo' AND modelo='".$row['modelo']."' AND inicio<='".$rowdetalle['fecha']."' AND final>='".$rowdetalle['fecha']."'";
-							$resultado=mysql_query($query);
+							$resultado=mysqli_query($link,$query);
 							
 
 
 
-							if(mysql_num_rows($resultado)>0)
+							if(mysqli_num_rows($resultado)>0)
 							{
-								$promodetalle=mysql_fetch_array($resultado);
+								$promodetalle=mysqli_fetch_array($resultado);
 								$totalfinal+=$promodetalle['puntos'];	
 								$puntostotales+=$promodetalle['puntos'];
 								$puntospromocion+=$promodetalle['puntos'];
@@ -737,8 +737,8 @@ class Users{
 
 	public function lista_usuarios_mes($mes,$ano)
 	{
-		$link=mysql_connect("localhost","motobene_usuario","socio00");
-		mysql_select_db("motobene_usuario");
+		$link=mysqli_connect("localhost","motobe5_admin","TByz5leCu9vC","motobe5_usuario");
+		// mysqli_select_db($link, "motobene_usuario");
 		$cadena="";
 
 
@@ -769,14 +769,14 @@ class Users{
 
 
 				$query="SELECT DISTINCT valida.modelo FROM valida,catalogo WHERE valida.modelo=catalogo.modelo AND cvendedor='".$vendedor."' AND fecha BETWEEN '".$fecha_inicio."' AND '".$fecha_final."' ORDER BY catalogo.modelo ASC";
-				$resultadofechas=mysql_query($query);
+				$resultadofechas=mysqli_query($link,$query);
 
 
 				
 
-				if(mysql_num_rows($resultadofechas) >0)
+				if(mysqli_num_rows($resultadofechas) >0)
 				{	
-						while ($row=mysql_fetch_array($resultadofechas)) {
+						while ($row=mysqli_fetch_array($resultadofechas)) {
 
 							$puntostotales=0;
 							$detalle=$this->db->prepare("SELECT * FROM valida,catalogo WHERE valida.modelo=catalogo.modelo AND cvendedor=? AND valida.modelo=? AND fecha BETWEEN '".$fecha_inicio."' AND '".$fecha_final."'");
@@ -799,14 +799,14 @@ class Users{
 									$nombre=$rowdetalle['nombre'];
 									$cobrado=$rowdetalle['cobrado'];
 									$query="SELECT puntos FROM promo WHERE tipo='$tipo' AND modelo='".$row['modelo']."' AND inicio<='".$rowdetalle['fecha']."' AND final>='".$rowdetalle['fecha']."'";
-									$resultado=mysql_query($query);
+									$resultado=mysqli_query($link,$query);
 									
 
 
 
-									if(mysql_num_rows($resultado)>0)
+									if(mysqli_num_rows($resultado)>0)
 									{
-										$promodetalle=mysql_fetch_array($resultado);
+										$promodetalle=mysqli_fetch_array($resultado);
 										$totalfinal+=$promodetalle['puntos'];	
 										$puntostotales+=$promodetalle['puntos'];
 										$puntospromocion+=$promodetalle['puntos'];
@@ -1042,8 +1042,8 @@ class Users{
 
 	public function pesos_por_pagar($id)
 	{
-		$link=mysql_connect("localhost","motobene_usuario","socio00");
-		mysql_select_db("motobene_usuario");
+		$link=mysqli_connect("localhost","motobe5_admin","TByz5leCu9vC","motobe5_usuario");
+		// mysqli_select_db($link, "motobene_usuario");
 		$cadena="";
 
 		$usuario=$this->db->prepare("SELECT cvendedor,tipo FROM users WHERE id=?");
@@ -1060,8 +1060,9 @@ class Users{
 		$ventas->bindValue(1, $vendedor);
 		$ventas->execute();	
 
-		$totalfinal=0;
-		$totalpagado=0;
+		$totalfinal    = 0;
+		$totalpagado   = 0;
+		$totalporpagar = 0;
 
 		if($ventas->rowCount()>0)
 		{	
@@ -1088,14 +1089,14 @@ class Users{
 							$nombre=$rowdetalle['nombre'];
 							$cobrado=$rowdetalle['cobrado'];
 							$query="SELECT puntos FROM promo WHERE tipo='$tipo' AND modelo='".$row['modelo']."' AND inicio<='".$rowdetalle['fecha']."' AND final>='".$rowdetalle['fecha']."'";
-							$resultado=mysql_query($query);
+							$resultado=mysqli_query($link,$query);
 							
 
 
 
-							if(mysql_num_rows($resultado)>0)
+							if(mysqli_num_rows($resultado)>0)
 							{
-								$promodetalle=mysql_fetch_array($resultado);
+								$promodetalle=mysqli_fetch_array($resultado);
 								$totalfinal+=$promodetalle['puntos'];	
 								$puntostotales+=$promodetalle['puntos'];
 								$puntospromocion+=$promodetalle['puntos'];
@@ -1149,8 +1150,8 @@ class Users{
 
 	public function pesos_por_pagar_distribuidor($id)
 	{
-		$link=mysql_connect("localhost","motobene_usuario","socio00");
-		mysql_select_db("motobene_usuario");
+		$link=mysqli_connect("localhost","motobe5_admin","TByz5leCu9vC","motobe5_usuario");
+		// mysqli_select_db($link, "motobene_usuario");
 		$cadena="";
 
 		$usuario=$this->db->prepare("SELECT cvendedor,tipo FROM users WHERE id=?");
@@ -1241,8 +1242,8 @@ class Users{
 
 	public function detalle_vendedor($id)
 	{
-		$link=mysql_connect("localhost","motobene_usuario","socio00");
-		mysql_select_db("motobene_usuario");
+		$link=mysqli_connect("localhost","motobe5_admin","TByz5leCu9vC","motobe5_usuario");
+		// mysqli_select_db($link, "motobene_usuario");
 		$cadena="";
 
 		$usuario=$this->db->prepare("SELECT cvendedor,tipo FROM users WHERE id=?");
@@ -1287,14 +1288,14 @@ class Users{
 							$nombre=$rowdetalle['nombre'];
 							$cobrado=$rowdetalle['cobrado'];
 							$query="SELECT puntos FROM promo WHERE tipo='$tipo' AND modelo='".$row['modelo']."' AND inicio<='".$rowdetalle['fecha']."' AND final>='".$rowdetalle['fecha']."'";
-							$resultado=mysql_query($query);
+							$resultado=mysqli_query($link,$query);
 							
 
 
 
-							if(mysql_num_rows($resultado)>0)
+							if(mysqli_num_rows($resultado)>0)
 							{
-								$promodetalle=mysql_fetch_array($resultado);
+								$promodetalle=mysqli_fetch_array($resultado);
 								$totalfinal+=$promodetalle['puntos'];	
 								$puntostotales+=$promodetalle['puntos'];
 								$puntospromocion+=$promodetalle['puntos'];
@@ -1372,8 +1373,8 @@ class Users{
 
 	public function detalle_vendedor_dist($id)
 	{
-		$link=mysql_connect("localhost","motobene_usuario","socio00");
-		mysql_select_db("motobene_usuario");
+		$link=mysqli_connect("localhost","motobe5_admin","TByz5leCu9vC","motobe5_usuario");
+		// mysqli_select_db($link, "motobene_usuario");
 		$cadena="";
 
 		$usuario=$this->db->prepare("SELECT cvendedor,tipo FROM users WHERE id=?");
@@ -1446,8 +1447,8 @@ class Users{
 		$cabecera = array('Codigo de vendedor','Username','Nombre','Apellido','E-mail','Telefono','Tipo','Pagado','Pagar','Gran total');
 		fputcsv($fp, $cabecera);
 
-		$link=mysql_connect("localhost","motobene_usuario","socio00");
-		mysql_select_db("motobene_usuario");
+		$link=mysqli_connect("localhost","motobe5_admin","TByz5leCu9vC","motobe5_usuario");
+		// mysqli_select_db($link, "motobene_usuario");
 		$cadena="";
 
 
@@ -1508,14 +1509,14 @@ class Users{
 											$nombre=$rowdetalle['nombre'];
 											$cobrado=$rowdetalle['cobrado'];
 											$query="SELECT puntos FROM promo WHERE tipo='$tipo' AND modelo='".$row['modelo']."' AND inicio<='".$rowdetalle['fecha']."' AND final>='".$rowdetalle['fecha']."'";
-											$resultado=mysql_query($query);
+											$resultado=mysqli_query($link,$query);
 											
 
 
 
-											if(mysql_num_rows($resultado)>0)
+											if(mysqli_num_rows($resultado)>0)
 											{
-												$promodetalle=mysql_fetch_array($resultado);
+												$promodetalle=mysqli_fetch_array($resultado);
 												$totalfinal+=$promodetalle['puntos'];	
 												$puntostotales+=$promodetalle['puntos'];
 												$puntospromocion+=$promodetalle['puntos'];
@@ -1608,8 +1609,8 @@ class Users{
 		$cabecera = array('Codigo de vendedor','Username','Nombre','Apellido','E-mail','Telefono','Tipo','Pagado','Pagar','Gran total');
 		fputcsv($fp, $cabecera);
 
-		$link=mysql_connect("localhost","motobene_usuario","socio00");
-		mysql_select_db("motobene_usuario");
+		$link=mysqli_connect("localhost","motobe5_admin","TByz5leCu9vC","motobe5_usuario");
+		// mysqli_select_db($link, "motobene_usuario");
 		$cadena="";
 
 
@@ -1670,8 +1671,8 @@ class Users{
 			$cabecera = array('Codigo de vendedor','Username','Nombre','Apellido','E-mail','Telefono','Tipo','Pagado','Pagar','Gran total');
 			fputcsv($fp, $cabecera);
 	
-			$link=mysql_connect("localhost","motobene_usuario","socio00");
-			mysql_select_db("motobene_usuario");
+			$link=mysqli_connect("localhost","motobe5_admin","TByz5leCu9vC","motobe5_usuario");
+			// mysqli_select_db($link, "motobene_usuario");
 			$cadena="";
 	
 	
@@ -1727,8 +1728,8 @@ class Users{
 		
 			$tipos_usuario=array('ALE' => TRUE,'GDM' => TRUE,'GNT' => TRUE,'ICA' => TRUE,'RED' => TRUE,'ROALCOM' => TRUE,'SIB' => TRUE,'CC' => TRUE,'DC' => TRUE );
 			
-			$link=mysql_connect("localhost","motobene_usuario","socio00");
-			mysql_select_db("motobene_usuario");
+			$link=mysqli_connect("localhost","motobe5_admin","TByz5leCu9vC","motobe5_usuario");
+			// mysqli_select_db($link, "motobene_usuario");
 			$cadena="";
 	
 	
@@ -1786,14 +1787,14 @@ class Users{
 										$nombre=$rowdetalle['nombre'];
 										$cobrado=$rowdetalle['cobrado'];
 										$query="SELECT puntos FROM promo WHERE tipo='$tipo' AND modelo='".$row['modelo']."' AND inicio<='".$rowdetalle['fecha']."' AND final>='".$rowdetalle['fecha']."'";
-										$resultado=mysql_query($query);
+										$resultado=mysqli_query($link,$query);
 										
 	
 	
 	
-										if(mysql_num_rows($resultado)>0)
+										if(mysqli_num_rows($resultado)>0)
 										{
-											$promodetalle=mysql_fetch_array($resultado);
+											$promodetalle=mysqli_fetch_array($resultado);
 											$totalfinal+=$promodetalle['puntos'];	
 											$puntostotales+=$promodetalle['puntos'];
 											$puntospromocion+=$promodetalle['puntos'];
@@ -1869,8 +1870,8 @@ class Users{
 		
 	public function lista_usuarios_test_2()
 		{
-			$link=mysql_connect("localhost","motobene_usuario","socio00");
-			mysql_select_db("motobene_usuario");
+			$link=mysqli_connect("localhost","motobe5_admin","TByz5leCu9vC","motobe5_usuario");
+			// mysqli_select_db($link, "motobene_usuario");
 			$cadena="";
 	
 	
@@ -1924,14 +1925,14 @@ class Users{
 										$nombre=$rowdetalle['nombre'];
 										$cobrado=$rowdetalle['cobrado'];
 										$query="SELECT puntos FROM promo WHERE tipo='$tipo' AND modelo='".$row['modelo']."' AND inicio<='".$rowdetalle['fecha']."' AND final>='".$rowdetalle['fecha']."'";
-										$resultado=mysql_query($query);
+										$resultado=mysqli_query($link,$query);
 										
 	
 	
 	
-										if(mysql_num_rows($resultado)>0)
+										if(mysqli_num_rows($resultado)>0)
 										{
-											$promodetalle=mysql_fetch_array($resultado);
+											$promodetalle=mysqli_fetch_array($resultado);
 											$totalfinal+=$promodetalle['puntos'];	
 											$puntostotales+=$promodetalle['puntos'];
 											$puntospromocion+=$promodetalle['puntos'];
@@ -2005,8 +2006,8 @@ class Users{
 
 	public function vendedor_pesos_modelo($id)
 	{
-		$link=mysql_connect("localhost","motobene_usuario","socio00");
-		mysql_select_db("motobene_usuario");
+		$link=mysqli_connect("localhost","motobe5_admin","TByz5leCu9vC","motobe5_usuario");
+		// mysqli_select_db($link, "motobene_usuario");
 		$cadena="";
 
 		$usuario=$this->db->prepare("SELECT cvendedor,tipo FROM users WHERE id=?");
@@ -2023,8 +2024,9 @@ class Users{
 		$ventas->bindValue(1, $vendedor);
 		$ventas->execute();	
 
-		$totalfinal=0;
-		$totalpagado=0;
+		$totalfinal    = 0;
+		$totalpagado   = 0;
+		$totalporpagar = 0;
 
 		if($ventas->rowCount()>0)
 		{	
@@ -2051,14 +2053,14 @@ class Users{
 							$nombre=$rowdetalle['nombre'];
 							$cobrado=$rowdetalle['cobrado'];
 							$query="SELECT puntos FROM promo WHERE tipo='$tipo' AND modelo='".$row['modelo']."' AND inicio<='".$rowdetalle['fecha']."' AND final>='".$rowdetalle['fecha']."'";
-							$resultado=mysql_query($query);
+							$resultado=mysqli_query($link,$query);
 							
 
 
 
-							if(mysql_num_rows($resultado)>0)
+							if(mysqli_num_rows($resultado)>0)
 							{
-								$promodetalle=mysql_fetch_array($resultado);
+								$promodetalle=mysqli_fetch_array($resultado);
 								$totalfinal+=$promodetalle['puntos'];	
 								$puntostotales+=$promodetalle['puntos'];
 								$puntospromocion+=$promodetalle['puntos'];
@@ -2094,9 +2096,9 @@ class Users{
 					}
 
 					$query="SELECT modelo FROM omisiones WHERE modelo='".$row['modelo']."'";
-					$omision=mysql_query($query);
+					$omision=mysqli_query($link,$query);
 					$estilo="block";
-					if(mysql_num_rows($omision)>0)
+					if(mysqli_num_rows($omision)>0)
 						$estilo='none';
 
 					$cadena.='
@@ -2438,7 +2440,7 @@ class Users{
 				
 				$headers .= "Reply-To: Motobenefits <noreply@moto-benefits.com.mx>\r\n"; 
 				$headers .= "Return-Path: Motobenefits <noreply@moto-benefits.com.mx>\r\n"; 
-				$headers .= "From: Motobenefits <noreplay@moto-benefits.com.mx>\r\n"; 
+				$headers .= "From: Motobenefits <noreply@moto-benefits.com.mx>\r\n"; 
 			    $headers .= "Organization: Motobenefits\r\n";
 			    $headers .= "MIME-Version: 1.0\r\n";
 			    $headers .= "Content-type: text/plain; charset=utf-8\r\n";
@@ -2567,7 +2569,7 @@ class Users{
 	
 			$time 		= time();
 			$ip 		= $_SERVER['REMOTE_ADDR']; // getting the users IP address
-			$email_code = $email_code = uniqid('code_',true); // Creating a unique string.
+			$email_code = uniqid('code_',true); // Creating a unique string.
 			
 			$password   = $bcrypt->genHash($password);
 	
