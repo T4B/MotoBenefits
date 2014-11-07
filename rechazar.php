@@ -1,11 +1,7 @@
 <?php
 		session_start();
+		require 'core/connect/database.php';
         require 'mailer/PHPMailerAutoload.php';
-
-		$link=mysql_connect("localhost","motobene_usuario","socio00");
-		mysql_select_db("motobene_usuario");
-
-
 
       $query="SELECT monto,cvendedor FROM pagos WHERE id='".$_GET['id']."'";
         $resultado=mysql_query($query);
